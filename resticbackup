@@ -1,0 +1,101 @@
+#!/bin/sh
+
+# Backing up some directories with restic (https://restic.github.io)
+# restic 0.8.0 or higher
+#
+
+# source the configuration
+
+
+# The default configfile. can be overwritten with the '--rc' parameter
+RESTICRC=~/.resticrc
+
+
+usage(){
+	echo "\
+Usage:
+	$0 [OPTIONS] [tags]
+	
+Options:
+	--prune		delete old snapshots from the repo and free space. The rcfile holds the parameters which snapshots to keep.
+	--rc rcfile	config-file for the backup. [default is $RESTICRC]
+
+	"
+}
+
+# Analyzing the first parameters starting with '--'.
+# if a parameter is: 
+#	'--prune' 	then start a 'restic forget --prune' after backing up.
+# 	'--rc' 		then the next parameter is taken as configfile.
+#	'--help'	print the help-text usage().
+while [ $# -gt 0 ]; do
+	# does the first  parameter start with '--'
+	if echo $1 | grep -q "^--"; then 
+		if [ $1 = "--prune" ]; then
+			PRUNE=YES
+			shift
+		elif [ $1 = "--rc" ]; then
+			RESTICRC=$2
+			shift;shift;
+		elif [ $1 = "--help" ]; then
+			usage
+			exit 0
+		else
+			usage
+			echo "Wrong parameter given"
+			exit 2
+		fi
+	else
+		break;
+	fi
+done
+
+
+# source the rc-file
+if [ -r $RESTICRC ]; then
+	. $RESTICRC
+	echo "using $RESTICRC"
+else
+	usage
+	echo "No resticrc found"
+	exit 1
+fi
+
+
+# set the repo and password
+export RESTIC_REPOSITORY
+export RESTIC_PASSWORD
+
+
+# build the exclude-parameters for 'restic backup'
+for i in $EXCLUDE ; do
+	EXCLUDEOPTION="$EXCLUDEOPTION --exclude $i"
+done
+
+
+# build the exclude-if-present-parameters for 'restic backup'
+for i in $EXCLUDEIFPRESENT ; do
+	EXCLUDEIFPRESENTOPTION="$EXCLUDEIFPRESENTOPTION --exclude-if-present $i"
+done
+
+
+# build the tag-parameters for 'restic backup'
+for i in $@ ; do
+	TAG="$TAG --tag $i"
+done
+
+
+# build the keep-parameters for 'restic forget --prune'
+for i in $KEEP ; do
+	KEEPOPTION="$KEEPOPTION --keep-tag $i"
+done
+
+
+# do the backup
+$RESTIC backup $TAG $EXCLUDEOPTION $EXCLUDEIFPRESENTOPTION $BACKUPOPTIONS $BACKUP
+
+
+# forget and prune old snapshots if '--prune' was given as first argument
+if [ $PRUNE ] ; then 
+	$RESTIC forget -g "host" --compact --prune $KEEPOPTION -y $YEAR -m $MONTH -w $WEEK -d $DAY -H $HOUR $FORGETOPTIONS
+fi
