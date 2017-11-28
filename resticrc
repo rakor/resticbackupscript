@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Some configurations for the restic-backupscript
+#
+#
+# /!\ Permissions of this file MUST be 400 to secure the credentials! /!\
+#
+
+# What to backup and exclude
+BACKUP="/root /usr/home /etc /var /usr/local/etc /boot"
+EXCLUDE="/usr/home/**/Mails* /var/cache /var/db/freebsd-update/files"
+EXCLUDEIFPRESENT="NOBACKUP DontSaveMe"
+
+KEEP="keep save important"
+
+# Infos about the repo. DON'T FORGET TO SET PERMISSIONS TO 700 
+RESTIC_REPOSITORY="MY_REPO_IS_HERE"
+RESTIC_PASSWORD="MY_SECURE_PASSWORD"
+
+# Additional options to set for backup (see 'restic help backup')
+BACKUPOPTIONS="--one-file-system --exclude-caches"
+
+# Additional options to set for the forget (see 'restic help forget')
+FORGETOPTIONS=""
+
+# How much snapshots should be kept per period when running 'restic forget'
+YEAR=3
+MONTH=6
+WEEK=4
+DAY=7
+HOUR=8
+
+# Where is the binary located?
+RESTIC="/usr/local/bin/restic"
