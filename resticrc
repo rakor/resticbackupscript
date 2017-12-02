@@ -4,6 +4,7 @@
 #
 #
 # /!\ Permissions of this file MUST be 400 to secure the credentials! /!\
+# /!\ And the owner should be set so something sane, e.g. 'root:root' /!\
 #
 
 # What to backup and exclude
