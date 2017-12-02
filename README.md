@@ -1,2 +1,2 @@
 # resticbackupscript
-My backupscript for restic
+This is my backupscript for backups using restic.
