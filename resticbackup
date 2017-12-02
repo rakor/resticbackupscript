@@ -3,7 +3,7 @@
 # Backing up some directories with restic (https://restic.github.io)
 # restic 0.8.0 or higher
 #
-# The permissions for this file should be 755.
+# The permissions for this file should be 555.
 
 # source the configuration
 

@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Shortcut to use restic without the need to fight with password and repo variables.
+# This is really just for my laziness
+# Permissions should be 555
+
+# source the configuration
+
+
+# The default configfile. can be overwritten with the '--rc' parameter
+RESTICRC=~/.resticrc
+
+
+usage(){
+	echo "\
+Usage:
+	$0 [OPTIONS] [tags]
+	
+Options:
+	--rc rcfile	config-file for the backup. [default is $RESTICRC]
+	"
+}
+
+# Analyzing the first parameters starting with '--'.
+# if a parameter is: 
+# 	'--rc' 		then the next parameter is taken as configfile.
+#	'--help'	print the help-text usage().
+while [ $# -gt 0 ]; do
+	# does the first  parameter start with '--'
+	if echo $1 | grep -q "^--"; then 
+		if [ $1 = "--rc" ]; then
+			RESTICRC=$2
+			shift;shift;
+		elif [ $1 = "--help" ]; then
+			usage
+			exit 0
+		else
+			usage
+			echo "Wrong parameter given"
+			exit 2
+		fi
+	else
+		break;
+	fi
+done
+
+
+# source the rc-file
+if [ -r $RESTICRC ]; then
+	. $RESTICRC
+	echo "using $RESTICRC"
+else
+	usage
+	echo "No resticrc found"
+	exit 1
+fi
+
+
+# set the repo and password
+export RESTIC_REPOSITORY
+export RESTIC_PASSWORD
+
+
+# run the command
+$RESTIC $@
