@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Some configurations for the restic-backupscript - Example for Debian
+#
+#
+# /!\ Permissions of this file MUST be 400 to secure the credentials! /!\
+# /!\ And the owner should be set so something sane, e.g. 'root:root' /!\
+#
+
+# What to backup and exclude
+BACKUP="/root /home /etc /var /usr/local /usr/src /opt /srv"
+EXCLUDE="/home/*/Downloads /home/*/Videos /restore /home/*/.local/share/gnome-boxes /home/*/.local/share/Trash /var/lib/libvirt /var/cache /var/run /var/tmp"
+EXCLUDEIFPRESENT="NOBACKUP"
+
+KEEP="keep save important"
+
+# Infos about the repo. DON'T FORGET TO SET PERMISSIONS TO 400 
+RESTIC_REPOSITORY=""
+RESTIC_PASSWORD=""
+
+# Additional options to set for backup (see 'restic help backup')
+BACKUPOPTIONS="--one-file-system --exclude-caches"
+
+# Additional options to set for the forget (see 'restic help forget')
+FORGETOPTIONS=""
+
+# How much snapshots should be kept per period when running 'restic forget'
+YEAR=5
+MONTH=12
+WEEK=12
+DAY=14
+HOUR=24
+
+# Where is the binary located?
+RESTIC="/usr/local/bin/restic"
