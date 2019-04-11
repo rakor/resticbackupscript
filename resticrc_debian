@@ -9,7 +9,7 @@
 
 # What to backup and exclude
 BACKUP="/root /home /etc /var /usr/local /usr/src /opt /srv"
-EXCLUDE="/home/*/Downloads /home/*/Videos /restore /home/*/.local/share/gnome-boxes /home/*/.local/share/Trash /var/lib/libvirt /var/cache /var/run /var/tmp"
+EXCLUDE="/home/*/Downloads /home/*/Videos /restore /home/*/.local/share/gnome-boxes /home/*/.local/share/Trash /var/lib/libvirt /var/cache /var/run /var/tmp /var/lib/flatpak"
 EXCLUDEIFPRESENT="NOBACKUP"
 
 KEEP="keep save important"
