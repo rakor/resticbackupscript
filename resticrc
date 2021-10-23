@@ -14,7 +14,9 @@ EXCLUDEIFPRESENT="NOBACKUP DontSaveMe"
 
 KEEP="keep save important"
 
-# Infos about the repo. DON'T FORGET TO SET PERMISSIONS TO 700 
+# Infos about the repo. DON'T FORGET TO SET PERMISSIONS TO 400 
+#B2_ACCOUNT_ID="MyBackblazeB2-KeyID-OnlyNeededIfYouAreUsingBackblaze"
+#B2_ACCOUNT_KEY="MyBackblazeB2-BucketKey-OnlyNeededIfYouAreUsingBackblaze"
 RESTIC_REPOSITORY="MY_REPO_IS_HERE"
 RESTIC_PASSWORD="MY_SECURE_PASSWORD"
 
